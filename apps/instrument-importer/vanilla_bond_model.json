@@ -1,0 +1,134 @@
+$jsonSchema: {
+  properties: {
+    numberOfTrades: {
+      bsonType: "int",
+      description: "The number of trades that have been executed for this bond"
+    },
+    isin: {
+      bsonType: "string",
+      description: "12-digit ISIN identifier for bond"
+    },
+    instrumentId: {
+      bsonType: "long",
+      description: "Masterfile’s unique ID for bond, auto generated sequential number"
+    },
+    currency: {
+      bsonType: "string",
+      description: "3-digit currency code for bond"
+    },
+    longDescription : {
+      bsonType: "string",
+      description: "More detailed description of bond, including issuer name"
+    },
+    maturityType: {
+      bsonType: "string",
+      description: "E.g. at maturity, puttable, callable, etc"
+    },
+    isFloat: {
+      bsonType: "bool",
+      description: "Whether the bond is floating rate, true, or fixed rate, false"
+    },
+    calculationType: {
+      bsonType: "string",
+      description: "The calculation type for the bond e.g. GERMAN BOND"
+    },
+    firstCouponDate: {
+      bsonType: "date",
+      description: "Date on which the first coupon is paid"
+    },
+    penultimateCouponDate: {
+      bsonType: "date",
+      description: "Date on which the penultimate coupon is paid"
+    },
+    maturityDate: {
+      bsonType: "date",
+      description: "Date on which the bond matures"
+    },
+    earliestMaturityDate: {
+      bsonType: "date",
+      description: "The earliest date that the bond can mature, for vanilla bonds this should equal the maturityDate"
+    },
+    paymentDate: {
+      bsonType: "date",
+      description: "Date on which the bond was bought from the issuer"
+    },
+    interestAccDate: {
+      bsonType: "date",
+      description: "Date on which the bond's interest begins accruing"
+    },
+    parAmount: {
+      bsonType: "decimal",
+      description: "The face value of the bond"
+    },
+    minPiece: {
+      bsonType: "decimal",
+      description: "The minimum amount of bond that must be purchased from issuer"
+    },
+    minIncrement: {
+      bsonType: "decimal",
+      description: "The minimum increment that can be purchased after minimum piece is purchased"
+    },
+    marketSector: {
+      bsonType: "string",
+      description: "The sector of the economy that issued the bond, e.g. Corp or Govt"
+    },
+    conformantPeriodId: {
+      bsonType: "long",
+      description: "contiguous period in time during which the parameters that influence coupon payments stay constant"
+    },
+    firstConformingDate: {
+      bsonType: "date",
+      description: "The start of the conformant period"
+    },
+    lastConformingDate: {
+      bsonType: "date",
+      description: "The end of the conformant period"
+    },
+    couponCurrency: {
+      bsonType: "string",
+      description: "3-digit currency code for the coupon payments"
+    },
+    endOfMonthRule: {
+      bsonType: "bool",
+      description: "Should the bond always pay on the last day of the month if it matures on the last day of the month?"
+    },
+    roundingForCoupon: {
+      bsonType: "int",
+      description: "Number of decimal places coupon interest is rounded to"
+    },
+    settlementDays: {
+      bsonType: "int",
+      description: "Number of days between trade date and settlement date"
+    },
+    freq: {
+      bsonType: "string",
+      description: "Frequency of coupon payments"
+    },
+    yieldConvType: {
+      bsonType: "string",
+      description: "The yield convention that is used with the bond, e.g. SIA"
+    },
+    dayCount: {
+      bsonType: "object",
+      description: "The day count conventions used by this instrument",
+      properties: {
+        default: {
+          bsonType: "string",
+          description: "The default day count convention used by this instrument"
+        },
+        discount: {
+          bsonType: "string",
+          description: "The day count convention used for discounted cash flows"
+        },
+        funding: {
+          bsonType: "string",
+          description: "The day count convention used for the funding rate"
+        }
+      }
+    },
+    coupon: {
+      bsonType: "decimal",
+      description: "The coupon rate for the bond"
+    }
+  }
+}

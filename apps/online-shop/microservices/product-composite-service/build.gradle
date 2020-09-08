@@ -1,0 +1,62 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'se.magnus.microservices.composite.product'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+ext {
+//	springfoxVersion = "3.0.0-SNAPSHOT"
+	springfoxVersion = "3.0.0-20200705.1715"
+	springCloudVersion = "Greenwich.RELEASE"
+	resilience4jVersion = "1.3.1"
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+}
+
+dependencies {
+	implementation project(':api')
+	implementation project(':util')
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE'
+	implementation "io.springfox:springfox-swagger2:2.10.5"
+	implementation "io.springfox:springfox-swagger-ui:2.10.5"
+	implementation "io.springfox:springfox-spring-webflux:2.10.5"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+
+//added chapter 07
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+	testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
+
+	//added in chapter 09
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	// added in chapter 11
+		implementation('org.springframework.boot:spring-boot-starter-security')
+	implementation('org.springframework.security:spring-security-oauth2-resource-server')
+	implementation('org.springframework.security:spring-security-oauth2-jose')
+
+	// added in chapter 12
+	implementation('org.springframework.cloud:spring-cloud-starter-config')
+	implementation('org.springframework.retry:spring-retry')
+
+	// added in chapter 13
+	implementation("io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}")
+	implementation("io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}")
+
+}
+dependencyManagement {
+	//added chapter 07
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

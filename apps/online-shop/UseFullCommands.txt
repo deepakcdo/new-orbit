@@ -1,0 +1,45 @@
+JDK download https://jdk.java.net/archive/
+
+Check cpu used by Java
+-- pure Java
+echo "Runtime.getRuntime().availableProcessors()" | /Users/deepakcdo/Documents/MySpace/Dev/Tools/jdk-11.0.2.jdk/Contents/Home/bin/jshell -q
+-- limiting by cpu in docker ( hard limit)
+echo "Runtime.getRuntime().availableProcessors()" | docker run --rm -i --cpus 3 openjdk:12.0.2 jshell -q
+-- limiting by cpu-shares in docker ( THe docker can use more than allocated cpu-share if avaialable at the host)
+echo "Runtime.getRuntime().availableProcessors()" | docker run --rm -i --cpu-shares 2048 openjdk:12.0.2 jshell -q
+
+Check Memory  used by Java
+-- pure java no limit - Default it will take 1/4 of total memory
+/Users/deepakcdo/Documents/MySpace/Dev/Tools/jdk-11.0.2.jdk/Contents/Home/bin/java -XX:+PrintFlagsFinal -version | grep MaxHeapSize
+-- pure java limit to 200m
+/Users/deepakcdo/Documents/MySpace/Dev/Tools/jdk-11.0.2.jdk/Contents/Home/bin/java -Xmx200m -XX:+PrintFlagsFinal -version | grep MaxHeapSize
+-- in docker container no limit - Default it will take 1/4 of total memory
+docker run --rm -it openjdk:12.0.2 java -XX:+PrintFlagsFinal -version | grep MaxHeapSize
+-- in docker container 1m  limit - So this will give the container 1m but the java will use 1/4th of that
+docker run --rm -it -m=1024m openjdk:12.0.2 java -XX:+PrintFlagsFinal -version | grep MaxHeapSize
+-- in docker container 1m  limit on container but 800m for java
+docker run --rm -it -m=1024m openjdk:12.0.2 java -Xmx800m -XX:+PrintFlagsFinal -version | grep MaxHeapSize
+-- memory check allocate an array of 100Mb in a container that is 1024m
+echo 'new byte[100_000_000]' | docker run -i --rm -m=1024m openjdk:12.0.2 jshell -q
+-- memory check allocate an array of 500Mb in a container that is 1024m
+echo 'new byte[500_000_000]' | docker run -i --rm -m=1024m openjdk:12.0.2 jshell -q
+
+Chanter 13 commands
+unset ACCESS_TOKEN
+ACCESS_TOKEN=$(curl -k https://writer:secret@localhost:8443/oauth/token -d grant_type=password -d username=magnus -d password=password -s | jq .access_token -r)
+echo $ACCESS_TOKEN
+unset AUTH
+AUTH="-H \"Authorization: Bearer $ACCESS_TOKEN\""
+echo $AUTH
+
+curl -H "Authorization: Bearer $ACCESS_TOKEN" -k https://localhost:8443/product-composite/2 -w "%{http_code}\n" -o /dev/null -s
+
+-- get health data
+docker run --rm -it --network=my-network alpine wget product-composite:8080/actuator/health -qO - | jq -r .details.circuitBreakers.details.product.details.state
+-- get ciruit breaker
+docker run --rm -it --network=my-network alpine wget product-composite:8080/actuator/circuitbreakerevents/product/STATE_TRANSITION -qO - | jq -r '.circuitBreakerEvents[-3].stateTransition, .circuitBreakerEvents[-2].stateTransition, .circuitBreakerEvents[-1].stateTransition'
+
+curl -H "Authorization: Bearer $ACCESS_TOKEN" -k https://localhost:8443/product-composite/2?delay=3 -s | jq .
+-- try timout
+time curl -H "Authorization: Bearer $ACCESS_TOKEN" -k https://localhost:8443/product-composite/2?faultPercent=25 -w "%{http_code}\n" -o /dev/null -s
+docker run --rm -it --network=my-network alpine wget product-composite:8080/actuator/retryevents/ -qO - | jq -r '.retryEvents[-2], .retryEvents[-1]'

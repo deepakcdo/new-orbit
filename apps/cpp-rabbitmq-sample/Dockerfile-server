@@ -1,0 +1,55 @@
+FROM gcc:10.2
+
+# Install CMake
+RUN apt-get update && apt-get install -y cmake libgtest-dev libboost-test-dev && rm -rf /var/lib/apt/lists/*
+
+# Install POCO C++ libraries
+RUN apt-get update && apt-get install -y cmake libpoco-dev
+
+RUN apt-get install -y \
+    openssh-server \
+    g++ \
+    cmake \
+    git 
+
+#installing the mongoc dependencies and driver
+RUN apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    libsasl2-dev
+
+RUN cd ~ \
+    && wget https://github.com/mongodb/mongo-c-driver/releases/download/1.17.0/mongo-c-driver-1.17.0.tar.gz \
+    && tar xzf mongo-c-driver-1.17.0.tar.gz \
+    && cd mongo-c-driver-1.17.0 \
+    && mkdir cmake-build \
+    && cd cmake-build \
+    && cmake -DENABLE_AUTOMATIC_INIT_AND_CLEANUP=OFF .. \
+    && cmake --build . \
+    && cmake --build . --target install
+
+#installing mongocxx driver - connects c++ to mongo
+RUN cd ~ \
+    && curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.0/mongo-cxx-driver-r3.6.0.tar.gz \
+    && tar -xzf mongo-cxx-driver-r3.6.0.tar.gz \
+    && cd mongo-cxx-driver-r3.6.0/build \
+    && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_AND_STATIC_LIBS=ON -DBUILD_SHARED_LIBS_WITH_STATIC_MONGOC=ON .. \
+    && cmake --build . --target EP_mnmlstc_core \
+    && cmake --build . \
+    && cmake --build . --target install
+
+COPY . /usr/src/cpp-rabbitmq-sample
+
+WORKDIR /usr/src/cpp-rabbitmq-sample
+
+RUN mkdir build
+
+RUN cd build
+
+RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local .
+
+RUN make
+
+RUN ls -R
+
+CMD ["./src/receive"]

@@ -1,0 +1,84 @@
+HOST=localhost PORT=8080 ./test-em-all.bash
+
+
+-- docker commands
+
+-- show task started by this shell
+jobs -p
+-- kill all jobs started by this shell
+
+kill $(jobs-p)
+docker images
+docker pull ubuntu
+docker run -it ubuntu
+docker ps -a
+docker container
+docker commit a1e0af23bd91 new-ubuntu1
+docker tag 41ae4ddd9595 deepakcdo/new-ubuntu:firsttry
+docker push deepakcdo/new-ubuntu:firsttry
+docker login
+docker-compose build
+docker-compose up -d
+docker containers ps
+docker-compose logs -f
+docker-compose logs <service>
+docker-compose logs containerName or ContainerID>
+docker-compose down
+-- stop and start docker service
+docker-compose up -d --scale product-0
+docker-compose up -d --scale product-1
+-- list all docker container names
+docker ps  --format {{.Names}}
+
+build and run all docker compose
+ ./gradlew build && docker-compose build && docker-compose up -d
+
+-- build a different docker-compose file
+export COMPOSE_FILE=docker-compose-config.yml
+docker-compose build
+docker-compose up -d
+unset COMPOSE_FILE
+-- log on to mongo
+docker-compose exec mongodb mongo product-db --quiet --eval "db.products.find()"
+
+
+-- log in to a docker container as root
+docker exec -it -u root 475212a77189 bash
+
+-- log on to mysql
+docker-compose exec mysql mysql -uuser -ppwd review-db
+docker-compose exec mysql mysql -uuser -ppwd review-db -e "Select * from reviews"
+
+--start a specific compose file
+docker-compose -f docker-middleware.yml up
+
+-- scale up a service
+docker-compose up -d --scale review=2
+
+-- get host ips for review service
+docker-compose exec product-composite getent hosts review
+
+--see /etc/hosts from docker
+docker-compose exec --index=1 review cat /etc/hosts
+docker-compose exec --index=2 review cat /etc/hosts
+
+--get a value from json response in curl HERE serviceAddresses.rev
+curl localhost:8080/product-composite/2 -s | jq -r .serviceAddresses.rev
+
+--get a value from json response in curl HERE serviceAddresses.rev with 2 sec timeout
+curl localhost:8080/product-composite/2 -m 2  |  jq -r .serviceAddresses.rev
+
+
+--get a value from array . here content from and array of recommendations
+curl localhost:8080/product-composite/2 -s | jq -r .recommendations[].content
+
+--get a value from eureka .
+curl -H "accept:application/json" localhost:8761/eureka/apps -s | jq -r .applications.application[].instance[].instanceId
+
+--test gateway redirect
+curl -H "Host:i.feel.lucky:8080" http://localhost:8080/headerrouting
+s
+--encrypt password
+curl -k https://dev-usr:dev-pwd@localhost:8443/config/encrypt --data-urlencode "hello"
+--decrypt password
+curl -k https://dev-usr:dev-pwd@localhost:8443/config/decrypt -d 63200277e839881beb11c02f53734f69d4635993d3968f9a438a2f2185814db1

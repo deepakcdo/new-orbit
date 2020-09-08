@@ -1,0 +1,25 @@
+.Panel {
+  padding: 10px;
+}
+
+.ButtonBox {
+  padding: 50px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.Spaced {
+  margin: 20px;
+}
+
+.CenterParent {
+  text-align: center;
+}
+
+.CenterChild {
+  margin: 10px auto;
+}
+
+.BoldText {
+  font-weight: bolder;
+}

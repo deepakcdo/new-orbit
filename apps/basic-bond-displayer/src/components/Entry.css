@@ -1,0 +1,19 @@
+.Card {
+  margin: 20px;
+}
+
+.View-button {
+  float: right;
+}
+
+.BoldText {
+  font-weight: bolder;
+}
+
+.RedTitle {
+  color: darkred;
+}
+
+.GreenTitle {
+  color: darkgreen;
+}

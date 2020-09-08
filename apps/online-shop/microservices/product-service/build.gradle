@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.2.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'se.magnus.microservices.core.product'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+ext {
+	mapstructVersion = "1.3.0.Beta2"
+	springCloudVersion = "Hoxton.SR6"
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+}
+
+dependencies {
+	implementation project(':api')
+	implementation project(':util')
+	implementation('org.springframework.boot:spring-boot-starter-actuator')
+	implementation('org.springframework.boot:spring-boot-starter-webflux')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+//	added in chapter 6
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	testImplementation('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
+//added chapter 07
+	implementation('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+	testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
+
+	//added in chapter 09
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	// added in chapter 12
+	implementation('org.springframework.cloud:spring-cloud-starter-config')
+	implementation('org.springframework.retry:spring-retry')
+}
+
+dependencyManagement {
+	//added chapter 07
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

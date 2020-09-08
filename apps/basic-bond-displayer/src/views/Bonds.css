@@ -1,0 +1,21 @@
+.LeftHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: left;
+}
+
+.RightHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.CenterVertical {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.HorizontalSpace {
+  margin-left: 10px;
+  margin-right: 10px;
+}

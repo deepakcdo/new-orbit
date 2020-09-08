@@ -1,0 +1,7 @@
+Steps to isntall madr
+npm install -g npm
+npm install madr && mkdir -p docs/adr && cp node_modules/madr/template/* docs/adr/
+npm install adr-log
+--
+rebuild index
+node_modules/.bin/adr-log -d docs/adr

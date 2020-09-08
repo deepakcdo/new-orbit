@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+		maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+	id "io.spring.dependency-management" version "1.0.5.RELEASE"
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = 'se.magnus.microservices.api'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+ext {
+//	springfoxVersion = "3.0.0-SNAPSHOT"
+	springfoxVersion = "3.0.0-20200705.1715"
+}
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE'
+	implementation "io.springfox:springfox-swagger2:2.10.5"
+	implementation "io.springfox:springfox-swagger-ui:2.10.5"
+	implementation "io.springfox:springfox-spring-webflux:2.10.5"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+}

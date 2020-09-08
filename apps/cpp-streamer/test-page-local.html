@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>C++ streamer testing page</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+
+    <style>
+        #chat {
+          resize: none;
+          overflow: hidden;
+          min-height: 300px;
+          max-height: 300px;
+      }
+    </style>
+</head>
+
+<body>
+        <nav class="navbar navbar-default navbar-pf" role="navigation">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="/">
+                   <p><strong>>>C++ streamer testing page</strong></p>
+                  </a>
+                </div>
+        </nav>
+    <div class="container">
+      <br/>
+      <div class="row">
+          <button id="connect" class="col-md-1 btn btn-primary" type="button">Connect</button>
+          <br/>
+          <br/>
+      </div>
+      <div class="row">
+          <textarea class="col-md-8" id="chat">
+            </textarea>
+      </div>
+
+
+      <div class="row">
+          <input class="col-md-6" id="num1" type="text" placeholder="Enter the first number">
+      </div>
+      <div class="row">
+          <input class="col-md-6" id="num2" type="text" placeholder="Enter the second number">
+      </div>
+      <div class="row">
+          <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>Get sum</button>
+      </div>
+
+      </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/js/patternfly.min.js"></script>
+
+    <script type="text/javascript">
+      var connected = false;
+      var socket;
+
+      $( document ).ready(function() {
+          $("#connect").click(connect);
+          $("#send").click(sendMessage);
+
+        $("#chat").change(function() {
+            scrollToBottom();
+          });
+
+      });
+
+      var connect = function() {
+          if (! connected) {
+              socket = new WebSocket("ws://192.168.99.100:8080/");
+              socket.onopen = function() {
+                  connected = true;
+                  console.log("Connected to the web socket");
+                  $("#send").attr("disabled", false);
+                  $("#connect").attr("disabled", true);
+              };
+              socket.onmessage =function(m) {
+                  console.log("Got message: " + m.data);
+                  $("#chat").append(m.data + "\n");
+                  scrollToBottom();
+              };
+          }
+      };
+
+      var sendMessage = function() {
+          if (connected) {
+              var num1 = $("#num1").val();
+              var num2 = $("#num2").val();
+              socket.send(num1 + "+" + num2);
+              console.log("Message sent");
+          }
+      };
+
+      var scrollToBottom = function () {
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+      };
+
+    </script>
+</body>
+
+</html>

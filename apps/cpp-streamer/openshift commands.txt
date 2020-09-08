@@ -1,0 +1,3 @@
+docker login registry.pro-eu-west-1.openshift.com -u $(oc whoami) -p $(oc whoami -t)
+docker tag cpp-rabbitmq-sample registry.pro-eu-west-1.openshift.com/new-orbit-helen/cpp-rabbitmq-sample:latest
+docker push registry.pro-eu-west-1.openshift.com/new-orbit-helen/cpp-rabbitmq-sample:latest

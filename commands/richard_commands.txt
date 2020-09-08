@@ -1,0 +1,101 @@
+#increase disk on code ready containers VM
+sudo qemu-img resize ~/.crc/machines/crc/crc +50Gi
+#log in to core VM
+ssh -i ~/.crc/machines/crc/id_rsa core@192.168.130.11
+sudo xfs_growfs /sysroot
+df -h 
+
+#machine spec commands
+sudo lspci
+lscpu
+
+#local oc login to crc
+oc login -u kubeadmin -p token https://api.crc.testing:6443
+
+#install mongodb on rhel 7
+#add mongo yum repo
+sudo touch /etc/yum.repos.d/mongodb-org-4.2.repo
+sudo chmod 777 /etc/yum.repos.d/mongodb-org-4.2.repo
+sudo cat <<EOF > /etc/yum.repos.d/mongodb-org-4.2.repo
+[mongodb-org-4.sudoository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+EOF
+
+#install on local
+sudo yum install -y mongodb-org
+#start and check
+sudo systemctl start mongod
+sudo systemctl status mongod
+
+#repository
+docker push quay.io/rickster1001/zigzag:tagname
+sudo systemctl status/stop/start/restart docker.service
+
+#podman on rhel allow access to use namespaces for non-root execution - not complete yet
+sysctl user.max_user_namespaces=15000
+sudo usermod --add-subuids 200000-201000 --add-subgids 200000-201000 richard
+
+#list all images
+sudo podman images -a 
+#delete images and dependent containers
+sudo podman rmi -f containerId
+
+#run container and enter terminal
+sudo podman run -it docker.io/rickster1001/mgndb:0.0.1
+#needed to do this to get a shell after setting mongod to run with mongod account in docker file
+sudo podman exec -it containerID /bin/sh
+#list all containers including dead ones
+sudo podman ps -a
+
+#build container from dockerfie using current directory as context
+sudo podman build -t docker.io/rickster1001/base:0.0.4 .
+#inspect details of image on local storage
+sudo skopeo inspect containers-storage:3279a9244b79 
+
+#look for images which have ubi7 in label
+sudo podman search ubi7
+#run mongo image with persistent volume on docker
+docker run -p 27017:27017 --name mongo --mount source=datavol,target=/data  rickster1001/mngdb:0.0.2 
+
+#run mongo CLI on local container
+sudo podman exec -it containerID mongo
+#run a root shell on container
+sudo podman exec -it --user=root containerID /bin/sh
+#shell into last container started 
+sudo podman exec -itl /bin/sh
+#remove unused images from local storage
+sudo podman images | perl -ne 'if (m/none/) {chomp; @a = split /\s+/,$_; print $a[2]."\n"; `sudo podman rmi $a[2]`; }'
+
+#get details of persistent storage
+oc get pv
+
+#set up new team member with project
+oc login https://api.pro-eu-west-1.openshift.com --token=xyz
+oc new-project new-orbit-zimu
+oc adm policy add-role-to-user admin zimuzeng99 
+
+client tools downloaded from help menu in openshift
+
+
+#enable repo for rhel builds of later versions of software - git 2.x in this case
+sudo yum install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+#tools for screengrabs
+sudo yum install ImageMagick
+
+#choose java version (Graal does not have RPM so this only works for openJDK
+sudo /usr/sbin/alternatives --config java
+
+#graal must be downloaded from Graal site and configured via PATH (graal location proceeds /usr/bin) and JAVA_HOME
+
+
+
+
+
+
+
+    
+

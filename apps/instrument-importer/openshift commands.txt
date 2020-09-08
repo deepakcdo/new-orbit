@@ -1,0 +1,2 @@
+oc rsync . mongo-importer-81-f7bb4:/mongo-importer-mnt --exclude=* --include=20200709.csv --no-perms
+oc rsync . mongo-importer-24-s9pft:/mongo-importer-mnt --exclude=* --include=20200702.csv --no-perms

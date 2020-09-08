@@ -1,0 +1,26 @@
+https://github.com/openshift/pipelines-tutorial
+
+https://www.openshift.com/blog/openshift-pipelines-tech-preview-blog
+
+jib/faq.md at master · GoogleContainerTools/jib
+
+
+Jonathan Johnson Kubernetes in Three Weeks Oreilly 
+
+Software architecture superstream
+
+Git  https://learning.oreilly.com/scenarios/work-remotely-with/9781492061885/?sfmc_id=143791606&utm_medium=email&utm_source=platform+b2b&utm_campaign=engagement&utm_content=whats+new+interactive+20200427
+
+
+
+Things to Learn
+Helm
+Operator
+ArgoCd
+Openshift server less / native
+Teuton
+Service Mesh
+
+
+Code ready container - IDE for cloud development
+
