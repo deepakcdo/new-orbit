@@ -1,0 +1,64 @@
+  497  oc login https://c100-e.eu-de.containers.cloud.ibm.com:31170 --token=j_4W3vLuxb4dtUgyb041gUav1Fqx1WaXYfHXOyHY27g
+  498  oc version
+  499  oc projects
+  500  oc whoami
+  501  oc projects
+  502  oc new-project dev-dd
+  503  history
+  504  oc projects
+  505  oc new-app centos/ruby-25-centos7~https://github.com/sclorg/ruby-ex.git
+  506  oc status
+  507  oc status
+  508  oc project
+  509  oc projects
+  510  oc new-build https://github.com/sclorg/httpd-container --context-dir 2.4/ --strategy docker
+  511  oc build-logs httpd-container-1
+  512  oc whomai
+  513  oc whoami
+  514  oc login https://c100-e.eu-de.containers.cloud.ibm.com:31170 --token=8fEMSoESVMkeAi2jUmnevzEBfU9CzLMTsTaT4c84mS0
+  515  oc whoami
+  516  oc projects
+  517  export DB_NAME=health_data
+  518  echo $DB_NAME
+  519  oc new-app --template=mysql-persistent --name=mysql -p MYSQL_DATABASE=$DB_NAME
+  520  oc get deploymentconfigs
+  521  oc describe deploymentconfig mysql
+  522  oc get pvc
+  523  oc get secrets
+  524  oc describe secret mysql
+  525  oc get pods
+  526  oc status
+  527  export DB_URL=mysql://<Name>.<Namespace>.svc.cluster.local:<Port>
+  528  oc describe service mysql
+  529  export DB_URL=mysql://mysql.dev-dd.svc.cluster.local:3306
+  530  echo $DB_URL
+  531  oc get secrets
+  532  oc create secret generic mysql-jdbc     --from-literal="jdbc-url=jdbc:$DB_URL/$DB_NAME?sessionVariables=sql_mode=''"
+  533  oc get secrets
+  534  oc create secret generic mysql-jdbc-dee     --from-literal="deepa=deepak"
+  535  oc get secrets
+  536  oc get pods
+  537  oc rsh mysql-1-nk4gq
+  538  pwd
+  539  vi build-resources.yml
+  540  oc apply -f build-resources.yaml
+  541  oc apply build-resources.yml 
+  542  oc apply -f build-resources.yml 
+  543  oc apply -f build-resources.yml 
+  544  oc start-build patient-api
+  545  oc get pods
+  546  oc logs patient-api-1-build
+  547  oc get builds
+  548  oc logs patient-api-1-build
+  549  oc logs patient-api-2-build
+  550  oc logs patient-api-2-build
+  551  oc get builds
+  552  vi deployement-resources.yml
+  553  oc apply -f deployment-resources.yaml
+  554  oc apply -f deployement-resources.yml 
+  555  oc get deploymentconfigs
+  556  oc get pods
+  557  oc get route patient-api
+  558  oc get route patient-ui
+  559  oc describe service patient-api
+  560  http://<Name>.<Namespace>.svc.cluster.local:<Port>/resources/v1/

@@ -1,0 +1,6 @@
+https://cloud.ibm.com/ -- ibm cloud
+
+https://github.com/IBM/node-s2i-openshift
+
+https://github.com/ibm-garage-dach/cloud-native-bootcamp-ocp311.git
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
